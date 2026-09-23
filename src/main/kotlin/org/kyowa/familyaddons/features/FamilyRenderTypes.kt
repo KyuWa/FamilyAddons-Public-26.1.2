@@ -23,25 +23,25 @@ object FamilyRenderTypes {
         )
     }
 
-    /**
-     * True depth-test-disabled clone of the vanilla LINES pipeline. 26.1 keeps
-     * the shader snippets private, but every getter needed to rebuild the
-     * pipeline is public, so we copy it field-by-field and swap the depth
-     * state for ALWAYS_PASS. Falls back to the old DEPTH_BIAS approximation
-     * if a future version changes the pipeline shape.
-     */
-    private val LINES_NO_DEPTH_PIPELINE: RenderPipeline by lazy {
+    /** The same lines as [LINES]: this build has no see-through variant. */
+    val LINES_NO_DEPTH: RenderType get() = LINES
+
+    // Solid-color translucent quad layer for beacon-beam columns. 26.1 dropped the
+    // public textured beacon-beam RenderType factory, so the beam is drawn as
+    // position+color quads (no texture) via the DEBUG_QUADS pipeline.
+    /** The debug quad pipeline draws without a depth test, so this one adds it. */
+    private val BEAM_PIPELINE: RenderPipeline by lazy {
         try {
-            val base = RenderPipelines.LINES
+            val base = RenderPipelines.DEBUG_QUADS
             val builder = RenderPipeline.builder()
-                .withLocation(Identifier.fromNamespaceAndPath("familyaddons", "pipeline/lines_no_depth"))
+                .withLocation(Identifier.fromNamespaceAndPath("familyaddons", "pipeline/beam_depth"))
                 .withVertexShader(base.vertexShader)
                 .withFragmentShader(base.fragmentShader)
                 .withVertexFormat(base.vertexFormat, base.vertexFormatMode)
                 .withColorTargetState(base.colorTargetState)
                 .withCull(base.isCull)
                 .withPolygonMode(base.polygonMode)
-                .withDepthStencilState(DepthStencilState(CompareOp.ALWAYS_PASS, false))
+                .withDepthStencilState(DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
             base.samplers.forEach { builder.withSampler(it) }
             base.uniforms.forEach { u ->
                 val tf = u.textureFormat()
@@ -55,28 +55,15 @@ object FamilyRenderTypes {
             }
             builder.build()
         } catch (e: Exception) {
-            FamilyAddons.LOGGER.warn("Couldn't build no-depth line pipeline, falling back to depth bias", e)
-            RenderPipelines.LINES_DEPTH_BIAS
+            FamilyAddons.LOGGER.warn("Couldn't build the depth-tested beam pipeline", e)
+            RenderPipelines.DEBUG_QUADS
         }
     }
 
-    val LINES_NO_DEPTH: RenderType by lazy {
-        RenderType.create(
-            "familyaddons_lines_no_depth",
-            RenderSetup.builder(LINES_NO_DEPTH_PIPELINE)
-                .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-                .setOutputTarget(OutputTarget.MAIN_TARGET)
-                .createRenderSetup()
-        )
-    }
-
-    // Solid-color translucent quad layer for beacon-beam columns. 26.1 dropped the
-    // public textured beacon-beam RenderType factory, so the beam is drawn as
-    // position+color quads (no texture) via the DEBUG_QUADS pipeline.
     val BEAM: RenderType by lazy {
         RenderType.create(
             "familyaddons_beam",
-            RenderSetup.builder(RenderPipelines.DEBUG_QUADS)
+            RenderSetup.builder(BEAM_PIPELINE)
                 .setOutputTarget(OutputTarget.MAIN_TARGET)
                 .createRenderSetup()
         )
