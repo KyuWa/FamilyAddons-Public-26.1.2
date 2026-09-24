@@ -16,7 +16,6 @@ import org.kyowa.familyaddons.config.FamilyConfigManager
 
 /**
  * Kuudra DPS-phase direction callout: RIGHT / FRONT / LEFT / BACK.
- * Ported from pawsup-1.2.5 Direction (same detection as the old JS module).
  *
  * Kuudra is a giant magma cube (width >= 14.5). Hypixel drives his synced
  * health from 100k down to 25k over the stun phases; the moment he surfaces

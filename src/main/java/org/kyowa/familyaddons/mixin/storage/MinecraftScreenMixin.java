@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Reproduces ChatTriggers' "guiClosed" (fired for the previous screen at the start of
- * displayGuiScreen) and "guiOpened" (fired for the new screen, including null) triggers.
+ * Screen-change callbacks: "closed" for the previous screen at the start of the
+ * screen swap, and "opened" for the new screen (including null).
  */
 @Mixin(Minecraft.class)
 public class MinecraftScreenMixin {
