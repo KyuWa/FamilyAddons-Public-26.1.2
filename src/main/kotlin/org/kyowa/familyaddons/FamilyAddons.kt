@@ -37,7 +37,6 @@ object FamilyAddons : ClientModInitializer {
         org.kyowa.familyaddons.features.Contact.register()
         KuudraState.register()
         CorpseESP.register()
-        Waypoints.register()
         EntityHighlight.register()
         ShulkerBoxHighlight.register()
         SparklingCritterHighlight.register()

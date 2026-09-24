@@ -28,7 +28,6 @@ import org.kyowa.familyaddons.features.FloorDropHighlight;
 import org.kyowa.familyaddons.features.DungeonHighlight;
 import org.kyowa.familyaddons.features.PileWaypoints;
 import org.kyowa.familyaddons.features.SupplyWaypoints;
-import org.kyowa.familyaddons.features.Waypoints;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,8 +54,7 @@ public class WorldRendererMixin {
             ChunkSectionsToRender chunkSectionsToRender,
             CallbackInfo ci
     ) {
-        if (!Waypoints.INSTANCE.hasWaypoints() &&
-                !CorpseESP.INSTANCE.hasCachedCorpses() &&
+        if (!CorpseESP.INSTANCE.hasCachedCorpses() &&
                 !EntityHighlight.INSTANCE.hasHighlighted() &&
                 !KuudraCrateWaypoints.INSTANCE.hasCrates() &&
                 !KuudraStunWaypoint.INSTANCE.hasWaypoint() &&
@@ -80,7 +78,6 @@ public class WorldRendererMixin {
         fa_matrices.setIdentity();
         fa_matrices.mulPose(new Matrix4f(modelViewMatrix));
 
-        Waypoints.INSTANCE.onWorldRender(fa_matrices, consumers, cam);
         CorpseESP.INSTANCE.onWorldRender(fa_matrices, consumers, cam);
         EntityHighlight.INSTANCE.onWorldRender(fa_matrices, consumers, cam);
         KuudraCrateWaypoints.INSTANCE.onWorldRender(fa_matrices, camera);
