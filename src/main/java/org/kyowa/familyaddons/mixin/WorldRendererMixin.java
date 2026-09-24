@@ -14,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector4f;
-import org.kyowa.familyaddons.features.CorpseESP;
 import org.kyowa.familyaddons.features.EntityHighlight;
 import org.kyowa.familyaddons.features.KuudraCrateWaypoints;
 import org.kyowa.familyaddons.features.KuudraFuelPhase;
@@ -54,8 +53,7 @@ public class WorldRendererMixin {
             ChunkSectionsToRender chunkSectionsToRender,
             CallbackInfo ci
     ) {
-        if (!CorpseESP.INSTANCE.hasCachedCorpses() &&
-                !EntityHighlight.INSTANCE.hasHighlighted() &&
+        if (!EntityHighlight.INSTANCE.hasHighlighted() &&
                 !KuudraCrateWaypoints.INSTANCE.hasCrates() &&
                 !KuudraStunWaypoint.INSTANCE.hasWaypoint() &&
                 !ShulkerBoxHighlight.INSTANCE.hasBoxes() &&
@@ -78,7 +76,6 @@ public class WorldRendererMixin {
         fa_matrices.setIdentity();
         fa_matrices.mulPose(new Matrix4f(modelViewMatrix));
 
-        CorpseESP.INSTANCE.onWorldRender(fa_matrices, consumers, cam);
         EntityHighlight.INSTANCE.onWorldRender(fa_matrices, consumers, cam);
         KuudraCrateWaypoints.INSTANCE.onWorldRender(fa_matrices, camera);
         KuudraStunWaypoint.INSTANCE.onWorldRender(fa_matrices, camera);
