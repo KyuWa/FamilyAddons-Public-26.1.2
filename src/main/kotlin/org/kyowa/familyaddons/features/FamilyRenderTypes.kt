@@ -18,7 +18,7 @@ object FamilyRenderTypes {
             "familyaddons_lines",
             RenderSetup.builder(RenderPipelines.LINES)
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-                .setOutputTarget(OutputTarget.MAIN_TARGET)
+                .setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
                 .createRenderSetup()
         )
     }
@@ -64,7 +64,7 @@ object FamilyRenderTypes {
         RenderType.create(
             "familyaddons_beam",
             RenderSetup.builder(BEAM_PIPELINE)
-                .setOutputTarget(OutputTarget.MAIN_TARGET)
+                .setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
                 .createRenderSetup()
         )
     }
