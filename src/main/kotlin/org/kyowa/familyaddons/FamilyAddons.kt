@@ -66,6 +66,7 @@ object FamilyAddons : ClientModInitializer {
         org.kyowa.familyaddons.features.ComposterGuard.register()
         GfsKeybinds.register()
         ArachneTimer.register()
+        ChatTimers.register()
 
         // Crimson Isle
         MiniBossTimer.register()
